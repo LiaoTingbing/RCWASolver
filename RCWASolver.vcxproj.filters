@@ -21,6 +21,9 @@
     <ClCompile Include="src\userFunc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Device.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h">

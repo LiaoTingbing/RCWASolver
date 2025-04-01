@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RCWASolver.cpp" />
+    <ClCompile Include="src\Device.cpp" />
     <ClCompile Include="src\userFunc.cpp" />
   </ItemGroup>
   <ItemGroup>
