@@ -29,6 +29,8 @@ class Device
 	//
 	Smatrix G;
 
+	double Rs, Ts, Rp, Tp;
+
 
 public:
  
@@ -42,6 +44,10 @@ public:
 	void RCWA();
  
 
+	double get_Rs();
+	double get_Rp();
+	double get_Ts();
+	double get_Tp();
 
 
 };

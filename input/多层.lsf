@@ -6,8 +6,8 @@ clear ;
 theta =  45  ;
 phi = 45 ;
 wave = 1.55e-6 ; 
-ku = 6 ;
-kv = 6 ;
+ku = 5 ;
+kv = 1 ;
 cellsx = 64 ; 
 cellsy = cellsx ; 
 

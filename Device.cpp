@@ -71,7 +71,11 @@ void Device::RCWA()
 	};
 	double k0 = 2 * pi / lambda;
 
-	cout << "\t计算入射波矢\n";
+	cout << "\t计算入射波矢:";
+	cout << "\ttheta=" << to_string(theta) ;
+	cout << "\tphi=" << to_string(phi) ;
+	cout << endl;
+
 	cx_double ER_inc = 1;
 	cx_double UR_inc = 1;
 	cx_vec k_inc = sqrt(ER_inc) * incident_direction;
@@ -79,13 +83,20 @@ void Device::RCWA()
 	cx_double ky_inc = k_inc(1);
 	cx_double kz_inc = k_inc(2);
 
-	cout << "\t计算周期矢量\n";
+	cout << "\t计算周期矢量";
+	cout << "\tLx = " << to_string(Lx);
+	cout << "\tLy = " << to_string(Ly);
+	cout << endl;
+
 	double Tx = 2.0 * pi / Lx / k0;
 	double Ty = 2.0 * pi / Ly / k0;
 
-	cout << "\t计算谐波展开\n";
-	ku = ku;
-	kv = kv;
+	cout << "\t计算谐波展开:";
+	cout << "\tku=" << to_string(ku);
+	cout << "\tkv=" << to_string(kv);
+	cout << endl;
+
+
 
 	vec m = linspace(-ku, ku, 2 * ku + 1);
 	vec n = linspace(-kv, kv, 2 * kv + 1);
@@ -117,7 +128,7 @@ void Device::RCWA()
 
 	//diagvec(Kx).print();
 
-	cout << "\t初始化散射矩阵\n";
+	//cout << "\t初始化散射矩阵\n";
 	cx_mat I(Nh, Nh, fill::eye);
 	cx_mat II(2 * Nh, 2 * Nh, fill::eye);
 	cx_mat Z(Nh, Nh);
@@ -238,7 +249,7 @@ void Device::RCWA()
 
 	// --------------------------------计算透射区
 
-
+	cout << "计算透射区\n";
 	cx_double ER_trn = 1;
 	cx_double UR_trn = 1;
 	cx_mat Kz_trn = conj(sqrt(conj(UR_trn) * conj(ER_trn) * I - Kx * Kx - Ky * Ky));
@@ -327,13 +338,39 @@ void Device::RCWA()
 		}
 	}
 
+
+	this->Rs = Rs;
+	this->Rp = Rp;
+	this->Ts = Ts;
+	this->Tp = Tp;
+
 	t4 = clock();
-	cout << "Time comsuing : " << double(t4 - t1) / CLOCKS_PER_SEC << endl;
-	cout << "Result：" << endl;
+	cout << "\n时间消耗 : " << double(t4 - t1) / CLOCKS_PER_SEC <<"s"<< endl;
+	cout << "结果：" << endl;
 	cout << "Rp" << "+" << "Tp" << "=" << Rp << "+" << Tp << "=" << Rp + Tp << endl;
 	cout << "Rs" << "+" << "Ts" << "=" << Rs << "+" << Ts << "=" << Rs + Ts << endl;
 
 
+}
+
+double Device::get_Rs()
+{
+	return Rs;
+}
+
+double Device::get_Rp()
+{
+	return Rp;
+}
+
+double Device::get_Ts()
+{
+	return Ts;
+}
+
+double Device::get_Tp()
+{
+	return Tp;
 }
 
 

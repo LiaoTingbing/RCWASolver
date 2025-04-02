@@ -10,6 +10,7 @@ int main()
 	Device rcwa;
 	rcwa.RCWA();
 	//fft_();
+	cout << rcwa.get_Rp() << endl;
 	return 0;
 }
 
