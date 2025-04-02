@@ -4,48 +4,27 @@
 
 Device::Device()
 {
-	string filename[] = {
-"LayerPos",
-"ku",
-"kv",
-"lambda",
-"theta",
-"phi",
-"x",
-"y",
-"z",
-"Index_real",
-"Index_imag",
-
-	};
-	for (auto& p : filename)
-	{
-		p = "input/" + p + ".txt";
-	}
-
 	string filepath = "input/";
-	LayerPos.load(filename[0]);
-	loadTXT(ku, filename[1]);
-	loadTXT(kv, filename[2]);
-	loadTXT(lambda, filename[3]);
-	loadTXT(theta, filename[4]);
-	loadTXT(phi, filename[5]);
-	x.load(filename[6]);
-	y.load(filename[7]);
-	z.load(filename[8]);
+	LayerPos.load(filepath + "LayerPos.txt");
+	loadTXT(ku, filepath + "ku.txt");
+	loadTXT(kv, filepath + "kv.txt");
+	loadTXT(lambda, filepath + "lambda.txt");
+	loadTXT(theta, filepath + "theta.txt");
+	loadTXT(phi, filepath + "phi.txt");
+	x.load(filepath + "x.txt");
+	y.load(filepath + "y.txt");
+	z.load(filepath + "z.txt");
 
 	layersNum = LayerPos.size();
 
-	string sreal,simag;
+	string sreal, simag;
 	Index = new cx_mat[layersNum];
 	mat IndexReal, IndexImag;
 	for (int i = 0; i < layersNum;i++)
 	{
-		sreal = "input/Index_real_Z" + to_string(i + 1) + ".txt";
-		simag = "input/Index_imag_Z" + to_string(i + 1) + ".txt";
+		sreal = filepath+"Index_real_"+"z" + to_string(i + 1) + ".txt";
+		simag = filepath+"Index_imag_"+"z" + to_string(i + 1) + ".txt";
 
-		//cout << s << endl	;
-		//Index[i].load(s);
 		IndexReal.load(sreal);
 		IndexImag.load(simag);
 		Index[i] = IndexReal + iI * IndexImag;
@@ -275,8 +254,8 @@ void Device::RCWA()
 	cx_mat Btrn = inv(W0) * Wtrn - inv(V0) * Vtrn;
 
 	Smatrix ST;
-	ST.S11 = Btrn * inv ( Atrn);
-	ST.S12 = 0.5 * (Atrn - Btrn *inv(  Atrn ) * Btrn);
+	ST.S11 = Btrn * inv(Atrn);
+	ST.S12 = 0.5 * (Atrn - Btrn * inv(Atrn) * Btrn);
 	ST.S21 = 2 * inv(Atrn);
 	ST.S22 = -inv(Atrn) * Btrn;
 
@@ -328,10 +307,10 @@ void Device::RCWA()
 		cx_vec tZ = -inv(Kz_trn) * (Kx * tX + Ky * tY);
 
 		////%% ¼ÆËãÑÜÉäÏµÊý
-		vec r2= real(  rX%conj(rX) + rY%conj(rY)+rZ%conj(rZ)  );
-		vec t2 = real( tX % conj(tX) +tY % conj(tY) + tZ % conj(tZ) );
- 
- 
+		vec r2 = real(rX % conj(rX) + rY % conj(rY) + rZ % conj(rZ));
+		vec t2 = real(tX % conj(tX) + tY % conj(tY) + tZ % conj(tZ));
+
+
 		vec  R = real(-Kz_ref / UR_ref) / real(kz_inc / UR_ref) * r2;
 		vec T = real(Kz_trn / UR_trn) / real(kz_inc / UR_inc) * t2;
 

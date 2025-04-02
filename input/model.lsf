@@ -1,5 +1,5 @@
-clc; 
-clear ; 
+clc;
+clear ;
 closeall;
 
 x = getresult("RCWA",'x');
@@ -11,7 +11,7 @@ write('y.txt',num2str(y),"overwrite");
 z = getresult("RCWA",'z');
 write('z.txt',num2str(z),"overwrite");
 
- 
+
 
 index = getresult("RCWA" ,  "index");
 IzPos = index.z;
@@ -20,19 +20,19 @@ write("LayerPos.txt",  num2str(IzPos),"overwrite");
 
 Iz =  pinch(  index.index_z ) ;
 #for(i = 1:size(Iz,3) ){
-    #s = "IndexZ" + num2str(i) + ".txt";
-    #d =  pinch( Iz(:,:,i) );
-    #write(s,  num2str(d),"overwrite");
+#s = "IndexZ" + num2str(i) + ".txt";
+#d =  pinch( Iz(:,:,i) );
+#write(s,  num2str(d),"overwrite");
 #}
 
 for(i = 1:size(Iz,3) ){
-    s = "Index_real_Z" + num2str(i) + ".txt";
+    s = "Index_real_z" + num2str(i) + ".txt";
     d = real( pinch( Iz(:,:,i) ) ) ;
     write(s,  num2str(d),"overwrite");
     
-        s = "Index_Imag_Z" + num2str(i) + ".txt";
-        d =imag( ( pinch( Iz(:,:,i) ) ) ) ;
-        write(s,  num2str(d),"overwrite");
+    s = "Index_Imag_z" + num2str(i) + ".txt";
+    d =imag( ( pinch( Iz(:,:,i) ) ) ) ;
+    write(s,  num2str(d),"overwrite");
 }
 
 
