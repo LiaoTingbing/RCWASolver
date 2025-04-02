@@ -15,24 +15,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RCWASolver.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\userFunc.cpp">
+    <ClCompile Include="fftMatlab.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Device.cpp">
+    <ClCompile Include="fftshiftMatlab.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="convulationMatrix.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="userFunc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common.h">
+    <ClInclude Include="fftMatlab.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\userFunc.h">
+    <ClInclude Include="fftshiftMatlab.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Device.h">
+    <ClInclude Include="convulationMatrix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="userFunc.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
