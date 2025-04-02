@@ -338,8 +338,6 @@ void Device::RCWA()
 			Rp = sum(R);
 			Tp = sum(T);
 		}
-
-		
 	}
 
 	t4 = clock();
