@@ -154,19 +154,27 @@ WVLmatrix solution_in_inHomogeneous_Layers(
 	return { Wi , Vi , diagmat(LAMi) };
 }
 
-vec MidValue(vec & v)
+cx_mat invD(const cx_mat  & In)
 {
-	vec A = (
-		v.subvec(0, v.size() - 2)
-		+ v.subvec(1, v.size() - 1)
-		) / 2.0;
-	//return (
-	//	v.subvec(0, v.size() - 2)
-	//	+ v.subvec(1, v.size() - 1)
-	//	) / 2.0;
-	return A;
+	cx_mat Out(In.n_rows, In.n_cols);
+	for (size_t i = 0; i < In.n_rows; i++)
+	{
+		Out(i, i) = 1.0 / In(i, i);
+	}
+	return Out;
 }
 
+mat invD(const mat& In)
+{
+	mat Out(In.n_rows, In.n_cols);
+	for (size_t i = 0; i < In.n_rows; i++)
+	{
+		Out(i, i) = 1.0 / In(i, i);
+	}
+	return Out;
+}
+
+ 
 
 
  

@@ -5,7 +5,7 @@
 Device::Device()
 {
 	string filename[] = {
-"Izpos",
+"LayerPos",
 "ku",
 "kv",
 "lambda",
@@ -14,14 +14,17 @@ Device::Device()
 "x",
 "y",
 "z",
-"IndexZ"
+"Index_real",
+"Index_imag",
+
 	};
 	for (auto& p : filename)
 	{
 		p = "input/" + p + ".txt";
 	}
 
-	Izpos.load(filename[0]);
+	string filepath = "input/";
+	LayerPos.load(filename[0]);
 	loadTXT(ku, filename[1]);
 	loadTXT(kv, filename[2]);
 	loadTXT(lambda, filename[3]);
@@ -31,23 +34,29 @@ Device::Device()
 	y.load(filename[7]);
 	z.load(filename[8]);
 
-	layersNum = Izpos.size();
+	layersNum = LayerPos.size();
 
-	string s;
-	IndexZ = new cx_mat[layersNum];
+	string sreal,simag;
+	Index = new cx_mat[layersNum];
+	mat IndexReal, IndexImag;
 	for (int i = 0; i < layersNum;i++)
 	{
-		s = "input/IndexZ" + to_string(i + 1) + ".txt";
+		sreal = "input/Index_real_Z" + to_string(i + 1) + ".txt";
+		simag = "input/Index_imag_Z" + to_string(i + 1) + ".txt";
+
 		//cout << s << endl	;
-		IndexZ[i].load(s);
-		IndexZ[i].save("index_z" + to_string(i + 1) + ".txt", arma::raw_ascii);
+		//Index[i].load(s);
+		IndexReal.load(sreal);
+		IndexImag.load(simag);
+		Index[i] = IndexReal + iI * IndexImag;
+		//Index[i].save("index_z" + to_string(i + 1) + ".txt", arma::raw_ascii);
 		//cout << IndexZ[i].n_rows << IndexZ[i].n_cols << endl;
 	}
 }
 
 Device::~Device()
 {
-	delete[]   IndexZ;
+	delete[]   Index;
 }
 
 void Device::RCWA()
@@ -117,7 +126,6 @@ void Device::RCWA()
 			kx_mn(i, j) = kx_inc - m(i) * Tx;
 			ky_mn(i, j) = ky_inc - n(j) * Ty;
 		}
-
 	}
 
 	//real(kx_mn).print();
@@ -200,7 +208,7 @@ void Device::RCWA()
 		t2 = clock();
 
 		di = ZL(Layer);
-		Indexi = conj(IndexZ[Layer]);
+		Indexi = conj(Index[Layer]);
 
 		ERi = pow(Indexi, 2.0);
 

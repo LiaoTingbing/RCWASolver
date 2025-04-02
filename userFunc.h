@@ -28,6 +28,10 @@ cx_mat Liu_conv_acc(
 WVLmatrix solution_in_inHomogeneous_Layers(
 	cx_mat &Kx, cx_mat& Ky, cx_mat& ERC, cx_mat& URC);
 
-vec MidValue(vec & v);
+
+
+cx_mat  invD( const cx_mat & In);  //对角矩阵求逆
+mat  invD(const mat& In);  //对角矩阵求逆
+
 
 

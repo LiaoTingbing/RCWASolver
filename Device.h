@@ -7,8 +7,8 @@ class Device
 {
 
 	//  ‰»Î ˝æ›
-	cx_mat* IndexZ;
-	vec Izpos, x, y, z;
+	cx_mat* Index ;
+	vec LayerPos, x, y, z;
 	int ku, kv;
 	double  lambda, theta, phi,thetaArc,phiArc;
 
