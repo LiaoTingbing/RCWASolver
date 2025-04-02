@@ -117,6 +117,7 @@ void Device::RCWA()
 			kx_mn(i, j) = kx_inc - m(i) * Tx;
 			ky_mn(i, j) = ky_inc - n(j) * Ty;
 		}
+
 	}
 
 	//real(kx_mn).print();
