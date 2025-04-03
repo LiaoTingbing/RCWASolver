@@ -9,15 +9,17 @@ class RCWA
 	vec LayerPos, x, y, z;
 	int ku, kv;
 	double  lambda, theta, phi ;
-	size_t layersNum;
-	cx_double ER_inc, UR_inc, ER_ref, UR_ref, ER_trn, UR_trn;
- 
+	//cx_double ER_inc, UR_inc, ER_ref, UR_ref, ER_trn, UR_trn;
+	double n_lower, n_upper;
+
 	double Rs, Rp, Ts, Tp;
 
 public:
 
 	RCWA();
-	RCWA(DataFile& In);
+ 
+	RCWA(DataRCWA & In);
+
 	~RCWA();
  
 	void Run();
@@ -27,6 +29,7 @@ public:
 	double getTs();
 	double getTp();
 
+	void set
 
 };
 

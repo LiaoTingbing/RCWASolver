@@ -1,19 +1,5 @@
 #include "userFunc.h"
 
-void loadTXT(double& s, string filename)
-{
-	mat A;
-	A.load(filename);
-	s = A(0);
-}
-
-void loadTXT(int& s, string filename)
-{
-	mat A;
-	A.load(filename);
-	s = int(A(0));
-}
-
 cx_mat MatrixConnect(cx_mat   A, cx_mat   B, cx_mat    C, cx_mat    D)
 {
 	return join_cols(join_rows(A, B), join_rows(C, D));

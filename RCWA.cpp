@@ -1,30 +1,28 @@
 
 #pragma once
 #include "RCWA.h"
- 
+
 RCWA::RCWA()
 {
 }
 
-RCWA::RCWA(DataFile& In)
+
+RCWA::RCWA(DataRCWA& In)
 {
 	Index = In.Index;
 	LayerPos = In.LayerPos;
 	x = In.x;
 	y = In.y;
+
 	z = In.z;
 	ku = In.ku;
-	kv = In.kv;
+	kv = In.kv;;
 	lambda = In.lambda;
 	theta = In.theta;
 	phi = In.phi;
-	layersNum = In.layersNum;
-	ER_inc = In.ER_inc;
-	UR_inc = In.UR_inc;
-	ER_ref = In.ER_ref;
-	UR_ref = In.UR_ref;
-	ER_trn = In.ER_trn;
-	UR_trn = In.UR_trn;
+
+	n_lower = In.n_lower;
+	n_upper = In.n_upper;;
 }
 
 RCWA::~RCWA()
@@ -34,7 +32,7 @@ RCWA::~RCWA()
 
 void RCWA::Run()
 {
-	cout << "初始化\n";
+	cout << " 初始化\n";
 	clock_t t1, t2, t3, t4;
 	t1 = clock();
 
@@ -55,32 +53,31 @@ void RCWA::Run()
 	};
 	double k0 = 2 * pi / lambda;
 
-	cout << "\t计算入射波矢:";
-	cout << "\ttheta=" << to_string(theta);
-	cout << "\tphi=" << to_string(phi);
+	cout << "\t 计算入射波矢:";
+	cout << "\t lambda=" << to_string(lambda * 1e6);
+	cout << "\t theta=" << to_string(theta);
+	cout << "\t phi=" << to_string(phi);
 	cout << endl;
 
-	//cx_double ER_inc = 1;
-	//cx_double UR_inc = 1;
-	cx_vec k_inc = sqrt(ER_inc) * incident_direction;
-	cx_double kx_inc = k_inc(0);
-	cx_double ky_inc = k_inc(1);
-	cx_double kz_inc = k_inc(2);
+	double ER_inc = n_lower * n_lower;
+	double UR_inc = 1;
+	vec k_inc = sqrt(ER_inc) * incident_direction;
+	double kx_inc = k_inc(0);
+	double ky_inc = k_inc(1);
+	double kz_inc = k_inc(2);
 
-	cout << "\t计算周期矢量";
-	cout << "\tLx = " << to_string(Lx);
-	cout << "\tLy = " << to_string(Ly);
+	cout << "\t 计算周期矢量";
+	cout << "\t Lx = " << to_string(Lx);
+	cout << "\t Ly = " << to_string(Ly);
 	cout << endl;
 
 	double Tx = 2.0 * pi / Lx / k0;
 	double Ty = 2.0 * pi / Ly / k0;
 
-	cout << "\t计算谐波展开:";
-	cout << "\tku=" << to_string(ku);
-	cout << "\tkv=" << to_string(kv);
+	cout << "\t 计算谐波展开:";
+	cout << "\t ku=" << to_string(ku);
+	cout << "\t kv=" << to_string(kv);
 	cout << endl;
-
-
 
 	vec m = linspace(-ku, ku, 2 * ku + 1);
 	vec n = linspace(-kv, kv, 2 * kv + 1);
@@ -113,10 +110,10 @@ void RCWA::Run()
 	//diagvec(Kx).print();
 
 	//cout << "\t初始化散射矩阵\n";
-	cx_mat I(Nh, Nh, fill::eye);
-	cx_mat II(2 * Nh, 2 * Nh, fill::eye);
-	cx_mat Z(Nh, Nh);
-	cx_mat ZZ(Nh * 2, Nh * 2);
+	const cx_mat I(Nh, Nh, fill::eye);
+	const cx_mat II(2 * Nh, 2 * Nh, fill::eye);
+	const cx_mat Z(Nh, Nh);
+	const cx_mat ZZ(Nh * 2, Nh * 2);
 
 	Smatrix G;
 
@@ -127,7 +124,7 @@ void RCWA::Run()
 
 	// -------------------------------------------------------GAP-------
 
-	cout << "计算GAP区\n";
+	cout << " 计算GAP区\n";
 	cx_mat Kz = conj(sqrt(I - Kx * Kx - Ky * Ky));
 	cx_mat Q = MatrixConnect(Kx * Ky, I - Kx * Kx, Ky * Ky - I, -Kx * Ky);
 	cx_mat W0 = MatrixConnect(I, Z, Z, I);
@@ -138,12 +135,11 @@ void RCWA::Run()
 
 	//V0.print();
 	//---------------------------------------------------------反射---------
-	cout << "计算反射区\n";
-	//cx_double  ER_ref = ER_inc;
-	//cx_double  UR_ref = UR_inc;
+	cout << " 计算反射区\n";
+	double  ER_ref = ER_inc;
+	double  UR_ref = UR_inc;
 
 	cx_mat Kz_ref = -conj(sqrt(conj(UR_ref) * conj(ER_ref) * I - Kx * Kx - Ky * Ky));
-
 
 	cx_mat Qref = 1.0 / UR_ref * MatrixConnect(
 		Kx * Ky, UR_ref * ER_ref * I - Kx * Kx,
@@ -168,7 +164,7 @@ void RCWA::Run()
 	//G.S12.diag().print();
 
 	//---------------------------------------------------器件
-	cout << "计算器件区\n";
+	cout << " 计算器件区\n";
 
 	vec ZL = diff(z);
 	double di;
@@ -180,7 +176,7 @@ void RCWA::Run()
 	Smatrix D;
 	for (size_t Layer = 0; Layer < ZL.size();Layer++)
 	{
-		cout << "\t第" << Layer + 1 << "层: ";
+		cout << "\t 第" << Layer + 1 << "层: ";
 		t2 = clock();
 
 		di = ZL(Layer);
@@ -225,18 +221,17 @@ void RCWA::Run()
 
 		//G.S12.diag().print();
 
-
 		t3 = clock();
-		cout << "\t耗时: " << double(t3 - t2) / CLOCKS_PER_SEC << "s\n";
+		cout << "\t 耗时: " << double(t3 - t2) / CLOCKS_PER_SEC << "s\n";
 	}
 
 	//G.S12.diag().print();
 
 	// --------------------------------计算透射区
 
-	cout << "计算透射区\n";
-	//cx_double ER_trn = 1;
-	//cx_double UR_trn = 1;
+	cout << " 计算透射区\n";
+	double ER_trn = n_upper * n_upper;
+	double UR_trn = 1;
 	cx_mat Kz_trn = conj(sqrt(conj(UR_trn) * conj(ER_trn) * I - Kx * Kx - Ky * Ky));
 
 	cx_mat 	Qtrn = 1.0 / UR_trn * MatrixConnect(
@@ -268,8 +263,7 @@ void RCWA::Run()
 			-sin(thetaArc) };
 	mat SP = join_rows(s, p);
 	//SP.print();
-
-	double Rs, Ts, Rp, Tp;
+ 
 	for (size_t SP_index = 0; SP_index < 2; SP_index++)
 	{
 		vec Pol = SP.col(SP_index);
@@ -324,15 +318,10 @@ void RCWA::Run()
 	}
 
 	t4 = clock();
-	cout << "\n时间消耗 : " << double(t4 - t1) / CLOCKS_PER_SEC << "s" << endl;
-	cout << "结果：" << endl;
-	cout << "Rp" << "+" << "Tp" << "=" << Rp << "+" << Tp << "=" << Rp + Tp << endl;
-	cout << "Rs" << "+" << "Ts" << "=" << Rs << "+" << Ts << "=" << Rs + Ts << endl;
-
-	this->Rs = Rs;
-	this->Rp = Rp;
-	this->Tp = Tp;
-	this->Ts = Ts;
+	cout << "\n 时间消耗 : " << double(t4 - t1) / CLOCKS_PER_SEC << "s" << endl;
+	cout << " 结果：" << endl;
+	cout << " Rp" << "+" << "Tp" << "=" << Rp << "+" << Tp << "=" << Rp + Tp << endl;
+	cout << " Rs" << "+" << "Ts" << "=" << Rs << "+" << Ts << "=" << Rs + Ts << endl;
 
 }
 
@@ -356,4 +345,4 @@ double RCWA::getTp()
 	return Tp;
 }
 
- 
+
