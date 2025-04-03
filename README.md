@@ -32,19 +32,19 @@ tree /f > filename
 
 | 名称 | 含义|
 |---|---|
-| ku | x方向最大谐波  (int)| 
-| kv | y方向最大谐波 （int)|
- | lambda | 波长 (vec) |
+| ku | x方向最大谐波  | 
+| kv | y方向最大谐波  |
+ | lambda | 波长  |
  | LayerPos| 每一层中心z坐标|
  | n_lower  | 入射区域的折射率|
 |   n_upper  |反射区域折射率|
 | phi  | 入射平面波旋转角|
 | theta | 入射角| 
 | x  |横向x网格坐标|
-   | y |横向y网格坐标|
-   | z | z向分层坐标|
-    |Index_real_z_i_j | 第i层第j个波长的实折射率|
-    |Index_imag_z_i_j| 第i层第j个波长的虚折射率|
+| y |横向y网格坐标|
+| z | z向分层坐标|
+|Index_real_z_i_j | 第i层第j个波长的实折射率|
+|Index_imag_z_i_j| 第i层第j个波长的虚折射率|
 
 
  
