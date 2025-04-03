@@ -371,4 +371,9 @@ void RCWA::set_n_upper(double In)
 	n_upper = In;
 }
 
+void RCWA::set_Index(vector<cx_mat> In)
+{
+	Index = In;
+}
+
 

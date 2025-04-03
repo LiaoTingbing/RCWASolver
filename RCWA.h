@@ -32,6 +32,8 @@ public:
 	void set_phi(double In);
 	void set_n_lower(double In);
 	void set_n_upper(double In);
+	void set_Index(vector<cx_mat> In);
+
 
 };
 

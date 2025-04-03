@@ -4,8 +4,13 @@
 #include <iostream>
 #include <fstream>
 
+
+
+
 using namespace std;
 using namespace arma;
+
+typedef vector<vector<cx_mat>> vectorCM2d;
 
 const double pi = acos(-1.0);
 
@@ -21,7 +26,7 @@ struct  Smatrix
 
 struct DataRCWA
 {
-	vector<cx_mat> Index;
+	vector<cx_mat> Index;                  //x y z 
 	vec LayerPos, x, y, z;
 	int ku, kv;
 	double  lambda, theta, phi, n_upper, n_lower;
@@ -29,6 +34,7 @@ struct DataRCWA
 
 struct DataFile
 {
-	vector<cx_mat> Index;   // x-y-pos-lambda
+	//vector<cx_mat> Index;   // x-y-z
+	vector<vector<cx_mat>> IndexS; // x-y-z-f
 	mat LayerPos, x, y, z, ku, kv, lambda, theta, phi, n_upper, n_lower;
 };

@@ -13,20 +13,23 @@ int main()
 
 	DataRCWA rcwaIn;
 
-	rcwaIn.Index = dataIn.Index;
+	// 器件数据
+	rcwaIn.Index = dataIn.IndexS[0];           // 第一个波长数据
 	rcwaIn.LayerPos = dataIn.LayerPos.col(0);
 	rcwaIn.x = dataIn.x.col(0);
 	rcwaIn.y = dataIn.y.col(0);
 	rcwaIn.z = dataIn.z.col(0);
-	rcwaIn.ku = round (dataIn.ku(0) );
-	rcwaIn.kv =round( dataIn.kv(0) );
+	rcwaIn.n_upper = (dataIn.n_upper(0));
+	rcwaIn.n_lower = (dataIn.n_lower(0));
+	// 谐波数
+	rcwaIn.ku = round(dataIn.ku(0));
+	rcwaIn.kv = round(dataIn.kv(0));
+	// 波源数据
+	rcwaIn.theta = (dataIn.theta(0));
+	rcwaIn.phi = (dataIn.phi(0));
+	rcwaIn.lambda = (dataIn.lambda(0));
 
-	rcwaIn.theta =  (dataIn.theta(0));
-	rcwaIn.phi =  (dataIn.phi(0));
-	rcwaIn.lambda=  (dataIn.lambda(0));
-	rcwaIn.n_upper =  (dataIn.n_upper(0));
-	rcwaIn.n_lower =   (dataIn.n_lower(0));
- 
+
 	RCWA rcwa(rcwaIn);
 
 	vec Rs(dataIn.lambda.size());
@@ -35,10 +38,11 @@ int main()
 		rcwa.set_lambda(dataIn.lambda(i));
 		rcwa.set_n_lower(dataIn.n_lower(i));
 		rcwa.set_n_upper(dataIn.n_upper(i));
+		rcwa.set_Index(dataIn.IndexS[i]);
 		rcwa.Run();
 		Rs(i) = rcwa.getRs();
 	}
- 
+
 	Rs.print();
 
 	return 0;
@@ -47,7 +51,6 @@ int main()
 DataFile loadDATA()
 {
 	DataFile DATA;
-
 	string filepath = "input/";
 	DATA.LayerPos.load(filepath + "LayerPos.txt");
 	DATA.ku.load(filepath + "ku.txt");
@@ -63,20 +66,26 @@ DataFile loadDATA()
 	//DATA.layersNum = DATA.LayerPos.size();
 
 	string sreal, simag;
-	DATA.Index = vector<cx_mat>(DATA.LayerPos.size());
 	mat IndexReal, IndexImag;
 	cx_mat tmp;
-	for (int i = 0; i < DATA.LayerPos.size();i++)
-	{
-		sreal = filepath + "Index_real_" + "z" + to_string(i + 1) + ".txt";
-		simag = filepath + "Index_imag_" + "z" + to_string(i + 1) + ".txt";
 
-		IndexReal.load(sreal);
-		IndexImag.load(simag);
-		tmp = IndexReal + iI * IndexImag;
-		DATA.Index[i] = tmp;
+	DATA.IndexS.resize(DATA.lambda.size());
+
+	for (size_t j = 0; j < DATA.lambda.size(); j++)  //
+	{
+		for (size_t i = 0; i < DATA.LayerPos.size();i++)  // f
+		{
+			DATA.IndexS[j].resize(DATA.LayerPos.size());
+			sreal = filepath + "Index_real_" + "z_" + to_string(i + 1) + "_" + to_string(j+1) + ".txt";
+			simag = filepath + "Index_imag_" + "z_" + to_string(i + 1) + "_" + to_string(j+1) + ".txt";
+
+			IndexReal.load(sreal);
+			IndexImag.load(simag);
+			tmp = IndexReal + iI * IndexImag;
+			DATA.IndexS[j][i] = tmp;
+		}
 	}
+
 	return DATA;
 }
 
- 

@@ -1,17 +1,17 @@
 
 
 clc ;
-clear ; 
+clear ;
 
 theta =  33  ;
 phi = 60 ;
-wave = 0.4e-6 ; 
+wave = 0.4e-6 ;
 waveSpan =0.4e-6;
-fpoint =2;
+fpoint =10;
 ku = 2 ;
 kv = 2 ;
-cellsx = 64 ; 
-cellsy = cellsx ; 
+cellsx = 64 ;
+cellsy = cellsx ;
 setnamed("RCWA" , "frequency points",fpoint);
 
 
@@ -19,31 +19,31 @@ setnamed("RCWA" , "frequency points",fpoint);
 #knectors = 128 ;
 
 
-switchtolayout ; 
-setnamed('RCWA' ,'angle theta' , theta) ; 
-setnamed('RCWA' ,'angle phi' , phi) ; 
-setnamed('RCWA' ,'wavelength center' , wave) ; 
-setnamed('RCWA' ,'wavelength span' , waveSpan) ; 
-setnamed('RCWA' ,'max number ku' , ku) ; 
-setnamed('RCWA' ,'max number kv' , kv) ; 
-setnamed('RCWA' ,'mesh cells x' , cellsx) ; 
-setnamed('RCWA' ,'mesh cells y' , cellsy) ; 
-#setnamed('RCWA' ,'max number k vectors' , knectors) ; 
- 
+switchtolayout ;
+setnamed('RCWA' ,'angle theta' , theta) ;
+setnamed('RCWA' ,'angle phi' , phi) ;
+setnamed('RCWA' ,'wavelength center' , wave) ;
+setnamed('RCWA' ,'wavelength span' , waveSpan) ;
+setnamed('RCWA' ,'max number ku' , ku) ;
+setnamed('RCWA' ,'max number kv' , kv) ;
+setnamed('RCWA' ,'mesh cells x' , cellsx) ;
+setnamed('RCWA' ,'mesh cells y' , cellsy) ;
+#setnamed('RCWA' ,'max number k vectors' , knectors) ;
 
-run ; 
 
-Total_energy = getresult( 'RCWA' , 'total_energy') ; 
-Rp = Total_energy.Rp ; 
-Tp = Total_energy.Tp ; 
+run ;
 
-Rs = Total_energy.Rs ; 
-Ts = Total_energy.Ts ; 
+Total_energy = getresult( 'RCWA' , 'total_energy') ;
+Rp = Total_energy.Rp ;
+Tp = Total_energy.Tp ;
 
-index = getresult( 'RCWA' , 'index') ; 
-index = pinch(  index.index_z )  ; 
+Rs = Total_energy.Rs ;
+Ts = Total_energy.Ts ;
 
- 
+index = getresult( 'RCWA' , 'index') ;
+index = pinch(  index.index_z )  ;
+
+
 x = getresult( 'RCWA' , 'x') ;
 y = getresult( 'RCWA' , 'y') ;
 Z = getresult( 'RCWA' , 'z') ;
@@ -56,9 +56,9 @@ Z = getresult( 'RCWA' , 'z') ;
 ?Rs;
 
 
-#grating_orders = getresult('RCWA' ,'grating_orders') ; 
+#grating_orders = getresult('RCWA' ,'grating_orders') ;
 
-matlabsave( 'DATA' ) ; 
+matlabsave( 'DATA' ) ;
 
 
 x = getresult("RCWA",'x');
@@ -77,24 +77,24 @@ IzPos = index.z;
 write("LayerPos.txt",  num2str(IzPos),"overwrite");
 
 
-Iz =  pinch(  index.index_z ) ;
+Iz =   (  index.index_z ) ;
 #Iz = Iz(:,:,:,2);
 #for(i = 1:size(Iz,3) ){
 #s = "IndexZ" + num2str(i) + ".txt";
 #d =  pinch( Iz(:,:,i) );
 #write(s,  num2str(d),"overwrite");
 #}
-
-    
-for(i = 1:size(Iz,3) ){
-    s = "Index_real_z" + num2str(i) + ".txt";
-    d = real( pinch( Iz(:,:,i) ) ) ;
-    write(s,  num2str(d),"overwrite");
-    s = "Index_Imag_z" + num2str(i) + ".txt";
-    d =imag( ( pinch( Iz(:,:,i) ) ) ) ;
-    write(s,  num2str(d),"overwrite");
-}
-
+for( j = 1:size(Iz,4) ){
+    for(i = 1:size(Iz,3) ){
+        
+        s = "Index_real_z_" + num2str(i) + "_" + num2str(j) + ".txt";
+        d = real( pinch( Iz(:,:,i,j) ) ) ;
+        write(s,  num2str(d),"overwrite");
+        
+        s = "Index_imag_z_" + num2str(i) + "_" + num2str(j) + ".txt";
+        d = imag( pinch( Iz(:,:,i,j) ) ) ;
+        write(s,  num2str(d),"overwrite");
+    }
 }
 
 lambda = index.lambda;
