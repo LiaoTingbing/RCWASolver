@@ -1,0 +1,54 @@
+
+
+clc ;
+clear ; 
+
+theta =  45  ;
+phi = 45 ;
+wave = 1.55e-6 ; 
+ku = 5 ;
+kv = 5 ;
+cellsx = 64 ; 
+cellsy = cellsx ; 
+
+
+
+#knectors = 128 ;
+
+
+switchtolayout ; 
+setnamed('RCWA' ,'angle theta' , theta) ; 
+setnamed('RCWA' ,'angle phi' , phi) ; 
+setnamed('RCWA' ,'wavelength center' , wave) ; 
+setnamed('RCWA' ,'max number ku' , ku) ; 
+setnamed('RCWA' ,'max number kv' , kv) ; 
+setnamed('RCWA' ,'mesh cells x' , cellsx) ; 
+setnamed('RCWA' ,'mesh cells y' , cellsy) ; 
+#setnamed('RCWA' ,'max number k vectors' , knectors) ; 
+ 
+
+run ; 
+
+Total_energy = getresult( 'RCWA' , 'total_energy') ; 
+Rp = Total_energy.Rp ; 
+Tp = Total_energy.Tp ; 
+
+Rs = Total_energy.Rs ; 
+Ts = Total_energy.Ts ; 
+
+index = getresult( 'RCWA' , 'index') ; 
+index = pinch(  index.index_z )  ; 
+
+ 
+x = getresult( 'RCWA' , 'x') ;
+y = getresult( 'RCWA' , 'y') ;
+Z = getresult( 'RCWA' , 'z') ;
+
+?"Rp+Tp="+num2str(Rp) + " + " + num2str(Tp) + ' = ' + num2str( Rp + Tp ) ;
+?"Rs+Ts="+num2str(Rs) + " + " + num2str(Ts) + ' = ' + num2str( Rs + Ts ) ;
+
+
+
+grating_orders = getresult('RCWA' ,'grating_orders') ; 
+
+matlabsave( 'DATA' ) ; 
