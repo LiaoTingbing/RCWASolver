@@ -3,13 +3,13 @@
 clc ;
 clear ;
 
-theta =  33  ;
+theta =  30  ;
 phi = 60 ;
-wave = 0.4e-6 ;
-waveSpan =0.4e-6;
-fpoint =1;
-ku = 2 ;
-kv = 2 ;
+#wave = 0.4e-6 ;
+#waveSpan = 0;
+fpoint =256;
+ku = 4 ;
+kv = 4 ;
 cellsx = 64 ;
 cellsy = cellsx ;
 setnamed("RCWA" , "frequency points",fpoint);
@@ -22,8 +22,8 @@ setnamed("RCWA" , "frequency points",fpoint);
 switchtolayout ;
 setnamed('RCWA' ,'angle theta' , theta) ;
 setnamed('RCWA' ,'angle phi' , phi) ;
-setnamed('RCWA' ,'wavelength center' , wave) ;
-setnamed('RCWA' ,'wavelength span' , waveSpan) ;
+#setnamed('RCWA' ,'wavelength center' , wave) ;
+#setnamed('RCWA' ,'wavelength span' , waveSpan) ;
 setnamed('RCWA' ,'max number ku' , ku) ;
 setnamed('RCWA' ,'max number kv' , kv) ;
 setnamed('RCWA' ,'mesh cells x' , cellsx) ;
@@ -54,6 +54,11 @@ Z = getresult( 'RCWA' , 'z') ;
 #}
 #print(Rs);
 ?Rs;
+
+plot(1:fpoint,Rs);holdon;
+plot(1:fpoint,Rp);holdon;
+plot(1:fpoint,Ts);holdon;
+plot(1:fpoint,Tp);holdon;
 
 
 #grating_orders = getresult('RCWA' ,'grating_orders') ;

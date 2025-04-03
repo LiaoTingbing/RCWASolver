@@ -62,5 +62,10 @@ vcpkg integrate install
 
 ## 案例
 
+仿真案例采用如图的器件结构 ，
+![](images/struct.png)
+
+RCWA的仿真模型为
+![](images/simulation.png)
 
 ## 总结
