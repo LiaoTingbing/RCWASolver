@@ -16,6 +16,12 @@
 *.lsp
 *.mat
 
+Input/*.fsp
+Input/*.lsp
+Input/*.mat
+
+
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
