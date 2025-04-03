@@ -24,9 +24,7 @@ RCWA ·½·¨ÊÇÒ»ÖÖ°ë½âÎö¼¼Êõ£¬ÓÃÓÚÇó½â¶à²ã½á¹¹ÖÐµÄÂó¿ËË¹Î¤·½³Ì×é¡£ÔÚÕâÖÖ·½·¨ÖÐ£¬½á¹
 
 Note: Æ½Ãæ²¨µÄ´«²¥ÖáÎªzÖá£¬ÑØ×ÅzÖáÕýÏò´«²¥¡£
 
-```
-tree /f > filename 
-```
+
 
 ¹ØÓÚInputÎÄ¼þ¼ÐµÄÊý¾Ý½éÉÜ
 
@@ -51,6 +49,16 @@ tree /f > filename
 
 ## Ê¹ÓÃ
 
+Ê¹ÓÃµÄÈí¼þÎªVisual Studio 2022 £¬ ¿â»·¾³°²×°ÈçÏÂ¡£
+
+```
+tree /f > filename 
+git clone https://github.com/microsoft/vcpkg.git
+.\bootstrap-vcpkg.bat 
+vcpkg install armadillo
+vcpkg install fftw3
+vcpkg integrate install
+```
 
 ## °¸Àý
 
