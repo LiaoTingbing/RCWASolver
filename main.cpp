@@ -63,11 +63,7 @@ DataFile loadDATA()
 	//DATA.layersNum = DATA.LayerPos.size();
 
 	string sreal, simag;
-	//DATA.Index = new cx_mat[DATA.LayerPos.size()];
 	DATA.Index = vector<cx_mat>(DATA.LayerPos.size());
-
-	//vector<cx_mat> A(DATA.LayerPos.size());
-
 	mat IndexReal, IndexImag;
 	cx_mat tmp;
 	for (int i = 0; i < DATA.LayerPos.size();i++)
@@ -79,7 +75,6 @@ DataFile loadDATA()
 		IndexImag.load(simag);
 		tmp = IndexReal + iI * IndexImag;
 		DATA.Index[i] = tmp;
-		//DATA.vIndex[i] = tmp;
 	}
 	return DATA;
 }

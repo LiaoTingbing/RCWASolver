@@ -7,7 +7,7 @@
 using namespace std;
 using namespace arma;
 
-const double pi = 3.1415926;
+const double pi = acos(-1.0);
 
 const cx_double iI(0, 1);
 
@@ -29,6 +29,6 @@ struct DataRCWA
 
 struct DataFile
 {
-	vector<cx_mat> Index;
+	vector<cx_mat> Index;   // x-y-pos-lambda
 	mat LayerPos, x, y, z, ku, kv, lambda, theta, phi, n_upper, n_lower;
 };

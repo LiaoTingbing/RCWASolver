@@ -85,7 +85,6 @@ Iz =  pinch(  index.index_z ) ;
 #write(s,  num2str(d),"overwrite");
 #}
 
- 
     
 for(i = 1:size(Iz,3) ){
     s = "Index_real_z" + num2str(i) + ".txt";
