@@ -178,7 +178,7 @@ void RCWA::Run()
 	{
 		cout << "\t µÚ" << Layer + 1 << "²ã: ";
 		t2 = clock();
-
+		  
 		di = ZL(Layer);
 		Indexi = conj(Index[Layer]);
 
