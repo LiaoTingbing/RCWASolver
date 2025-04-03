@@ -63,8 +63,13 @@ DataFile loadDATA()
 	//DATA.layersNum = DATA.LayerPos.size();
 
 	string sreal, simag;
-	DATA.Index = new cx_mat[DATA.LayerPos.size()];
+	//DATA.Index = new cx_mat[DATA.LayerPos.size()];
+	DATA.Index = vector<cx_mat>(DATA.LayerPos.size());
+
+	//vector<cx_mat> A(DATA.LayerPos.size());
+
 	mat IndexReal, IndexImag;
+	cx_mat tmp;
 	for (int i = 0; i < DATA.LayerPos.size();i++)
 	{
 		sreal = filepath + "Index_real_" + "z" + to_string(i + 1) + ".txt";
@@ -72,7 +77,9 @@ DataFile loadDATA()
 
 		IndexReal.load(sreal);
 		IndexImag.load(simag);
-		DATA.Index[i] = IndexReal + iI * IndexImag;
+		tmp = IndexReal + iI * IndexImag;
+		DATA.Index[i] = tmp;
+		//DATA.vIndex[i] = tmp;
 	}
 	return DATA;
 }

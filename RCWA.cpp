@@ -27,7 +27,7 @@ RCWA::RCWA(DataRCWA& In)
 
 RCWA::~RCWA()
 {
-	delete[]   Index;
+	 
 }
 
 void RCWA::Run()

@@ -5,7 +5,7 @@
 
 class RCWA
 {
-	cx_mat* Index;
+	vector<cx_mat> Index;
 	vec LayerPos, x, y, z;
 	int ku, kv;
 	double  lambda, theta, phi, n_lower, n_upper;

@@ -3,13 +3,13 @@
 clc ;
 clear ; 
 
-theta =  45  ;
-phi = 45 ;
+theta =  33  ;
+phi = 60 ;
 wave = 0.8e-6 ; 
 waveSpan = 0.8e-6;
-fpoint =4;
-ku = 4 ;
-kv = 4 ;
+fpoint =10;
+ku = 2 ;
+kv = 2 ;
 cellsx = 64 ; 
 cellsy = cellsx ; 
 setnamed("RCWA" , "frequency points",fpoint);
@@ -48,9 +48,12 @@ x = getresult( 'RCWA' , 'x') ;
 y = getresult( 'RCWA' , 'y') ;
 Z = getresult( 'RCWA' , 'z') ;
 
-?"Rp+Tp="+num2str(Rp) + " + " + num2str(Tp) + ' = ' + num2str( Rp + Tp ) ;
-?"Rs+Ts="+num2str(Rs) + " + " + num2str(Ts) + ' = ' + num2str( Rs + Ts ) ;
-
+#for( i=1:fpoint){
+#?"Rp+Tp="+num2str(Rp(i)) + " + " + num2str(Tp(i)) + ' = ' + num2str( Rp(i) + Tp(i) ) ;
+#?"Rs+Ts="+num2str(Rs(i)) + " + " + num2str(Ts(i)) + ' = ' + num2str( Rs(i) + Ts(i) ) ;
+#}
+#print(Rs);
+?Rs;
 
 
 #grating_orders = getresult('RCWA' ,'grating_orders') ; 
@@ -75,6 +78,7 @@ write("LayerPos.txt",  num2str(IzPos),"overwrite");
 
 
 Iz =  pinch(  index.index_z ) ;
+#Iz = Iz(:,:,:,1);
 #for(i = 1:size(Iz,3) ){
 #s = "IndexZ" + num2str(i) + ".txt";
 #d =  pinch( Iz(:,:,i) );

@@ -21,7 +21,7 @@ struct  Smatrix
 
 struct DataRCWA
 {
-	cx_mat* Index;
+	vector<cx_mat> Index;
 	vec LayerPos, x, y, z;
 	int ku, kv;
 	double  lambda, theta, phi, n_upper, n_lower;
@@ -29,6 +29,6 @@ struct DataRCWA
 
 struct DataFile
 {
-	cx_mat* Index;
+	vector<cx_mat> Index;
 	mat LayerPos, x, y, z, ku, kv, lambda, theta, phi, n_upper, n_lower;
 };
