@@ -1,40 +1,32 @@
 #pragma once
 #include "common.h"
+#include "userFunc.h"
+#include "convulationMatrix.h"
 
 class RCWA
 {
-	Smatrix ST , SR , G;
-	Source sc;
-	Dev dev;
-	rcwaDATA DATA;
-
-	rcwaPara Para;
-	
-	cx_mat I ;
-	cx_mat II ;
-	cx_mat Z ;
-	cx_mat ZZ;
+	cx_mat* Index;
+	vec LayerPos, x, y, z;
+	int ku, kv;
+	double  lambda, theta, phi ;
+	size_t layersNum;
+	cx_double ER_inc, UR_inc, ER_ref, UR_ref, ER_trn, UR_trn;
+ 
+	double Rs, Rp, Ts, Tp;
 
 public:
+
 	RCWA();
-	RCWA(Dev& dev, Source& sc, rcwaPara Para);
+	RCWA(DataFile& In);
 	~RCWA();
+ 
+	void Run();
 
-	void initiliaze();
-	void gapSolve();
-	void refSlove();
-	void layerSole();
-	void trnSolve();
-	void RTsolve();
+	double getRs();
+	double getRp();
+	double getTs();
+	double getTp();
 
-	void Run() {
-		initiliaze();
-		gapSolve();
-		refSlove();
-		layerSole();
-		trnSolve();
-		RTsolve();
-	}
+
 };
-
 

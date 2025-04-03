@@ -33,85 +33,14 @@ struct Mesh
 	mat Z;
 };
 
-struct Source
-{
-	double theta;
-	double phi;
-	double lambda;
-	double frequency;
-	int ku;
-	int kv;
-};
-
-struct Dev
+ 
+struct DataFile
 {
 	cx_mat* Index;
 	vec LayerPos, x, y, z;
-};
-
-
-struct rcwaDATA
-{
- 
-	clock_t t1, t2, t3, t4;
- 
-
-	size_t Nx  ;
-	size_t Ny  ;
-	size_t Ncx  ;
-	size_t Ncy  ;
-	size_t Nc  ;
-
-	double Lx  ;
-	double Ly  ;
-	double thetaArc ;
-	double phiArc  ;
-	vec incident_direction;
-	double k0  ;
-
- 
-
-	cx_double ER_inc ;
-	cx_double UR_inc  ;
-	cx_vec k_inc  ;
-	cx_double kx_inc ;
-	cx_double ky_inc  ;
-	cx_double kz_inc  ;
-
- 
-
-	double Tx  ;
-	double Ty  ;
- 
-
-
-
-	vec m  ;
-	vec n  ;
-
-	 size_t M ;
-	 size_t N  ;
-	 size_t Nh  ;
-
-
-	cx_mat kx_mn;
-	cx_mat ky_mn;
-
-  
-	cx_mat Kx  ;
-	cx_mat Ky ;
-
- 
-	cx_mat I ;
-	cx_mat II ;
-	cx_mat Z ;
-	cx_mat ZZ ;
- 
-};
-
-struct rcwaPara
-{
-	int ku;
-	int kv;
-
+	int ku, kv;
+	double  lambda, theta, phi, thetaArc, phiArc;
+	size_t layersNum;
+	cx_double ER_inc, UR_inc, ER_ref, UR_ref, ER_trn, UR_trn;
+	double n_upper, n_lower;
 };

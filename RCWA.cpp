@@ -1,92 +1,104 @@
+
 #pragma once
 #include "RCWA.h"
-
+ 
 RCWA::RCWA()
 {
 }
 
+RCWA::RCWA(DataFile& In)
+{
+	Index = In.Index;
+	LayerPos = In.LayerPos;
+	x = In.x;
+	y = In.y;
+	z = In.z;
+	ku = In.ku;
+	kv = In.kv;
+	lambda = In.lambda;
+	theta = In.theta;
+	phi = In.phi;
+	layersNum = In.layersNum;
+	ER_inc = In.ER_inc;
+	UR_inc = In.UR_inc;
+	ER_ref = In.ER_ref;
+	UR_ref = In.UR_ref;
+	ER_trn = In.ER_trn;
+	UR_trn = In.UR_trn;
+}
+
 RCWA::~RCWA()
 {
+	delete[]   Index;
 }
 
-RCWA::RCWA(Dev& dev, Source& sc ,rcwaPara Para)
-{
-	this->dev = dev;
-	this->sc = sc;
-	this->Para = Para;
-}
-
-void RCWA::initiliaze()
+void RCWA::Run()
 {
 	cout << "初始化\n";
-	//clock_t t1, t2, t3, t4;
-	//t1 = clock();
+	clock_t t1, t2, t3, t4;
+	t1 = clock();
 
-	DATA.Nx = dev.x.size();
-	DATA.Ny = dev.y.size();
-	DATA.Ncx = dev.x.size() - 1;
-	DATA.Ncy = dev.y.size() - 1;
-	DATA.Nc = DATA.Ncx * DATA.Ncy;
+	size_t Nx = x.size();
+	size_t Ny = y.size();
+	size_t Ncx = x.size() - 1;
+	size_t Ncy = y.size() - 1;
+	size_t Nc = Ncx * Ncy;
 
-	DATA.Lx = dev.x(DATA.Nx - 1) - dev.x(0);
-	DATA.Ly = dev.y(DATA.Ny - 1) - dev.y(0);
-	DATA.thetaArc = sc.theta * pi / 180.0;
-	DATA.phiArc = sc.phi * pi / 180.0;
-	DATA.incident_direction = {
-		sin(DATA.thetaArc) * cos(DATA.phiArc),
-		sin(DATA.thetaArc) * sin(DATA.phiArc),
-		cos(DATA.thetaArc)
+	double Lx = x(Nx - 1) - x(0);
+	double Ly = y(Ny - 1) - y(0);
+	double thetaArc = theta * pi / 180.0;
+	double phiArc = phi * pi / 180.0;
+	vec incident_direction = {
+		sin(thetaArc) * cos(phiArc),
+		sin(thetaArc) * sin(phiArc),
+		cos(thetaArc)
 	};
-	DATA.k0 = 2 * pi / sc.lambda;
+	double k0 = 2 * pi / lambda;
 
 	cout << "\t计算入射波矢:";
-	cout << "\ttheta=" << to_string(sc.theta);
-	cout << "\tphi=" << to_string(sc.phi);
+	cout << "\ttheta=" << to_string(theta);
+	cout << "\tphi=" << to_string(phi);
 	cout << endl;
 
-	DATA.ER_inc = 1;
-	DATA.UR_inc = 1;
-	DATA.k_inc = sqrt(DATA.ER_inc) * DATA.incident_direction;
-	DATA.kx_inc = DATA.k_inc(0);
-	DATA.ky_inc = DATA.k_inc(1);
-	DATA.kz_inc = DATA.k_inc(2);
+	//cx_double ER_inc = 1;
+	//cx_double UR_inc = 1;
+	cx_vec k_inc = sqrt(ER_inc) * incident_direction;
+	cx_double kx_inc = k_inc(0);
+	cx_double ky_inc = k_inc(1);
+	cx_double kz_inc = k_inc(2);
 
 	cout << "\t计算周期矢量";
-	cout << "\tLx = " << to_string(DATA.Lx);
-	cout << "\tLy = " << to_string(DATA.Ly);
+	cout << "\tLx = " << to_string(Lx);
+	cout << "\tLy = " << to_string(Ly);
 	cout << endl;
 
-	DATA.Tx = 2.0 * pi / DATA.Lx / DATA.k0;
-	DATA.Ty = 2.0 * pi / DATA.Ly / DATA.k0;
+	double Tx = 2.0 * pi / Lx / k0;
+	double Ty = 2.0 * pi / Ly / k0;
 
 	cout << "\t计算谐波展开:";
-	cout << "\tku=" << to_string(Para.ku);
-	cout << "\tkv=" << to_string(Para.kv);
+	cout << "\tku=" << to_string(ku);
+	cout << "\tkv=" << to_string(kv);
 	cout << endl;
 
 
 
-	DATA.m = linspace(-Para.ku, Para.ku, 2 * Para.ku + 1);
-	DATA.n = linspace(-Para.kv, Para.kv, 2 * Para.kv + 1);
+	vec m = linspace(-ku, ku, 2 * ku + 1);
+	vec n = linspace(-kv, kv, 2 * kv + 1);
 
-	DATA.M = DATA.m.size();
-	DATA.N = DATA.n.size();
-	DATA.Nh = DATA.M * DATA.N;
-
-
-	cx_mat kx_mn(DATA.M, DATA.N);
-	cx_mat ky_mn(DATA.M, DATA.N);
-	
-	DATA.kx_mn = cx_mat(DATA.M, DATA.N);
-	DATA.ky_mn = cx_mat(DATA.M, DATA.N);
+	const size_t M = m.size();
+	const size_t N = n.size();
+	const size_t Nh = M * N;
 
 
-	for (size_t i = 0; i < DATA.M; i++)
+	cx_mat kx_mn(M, N);
+	cx_mat ky_mn(M, N);
+
+	for (size_t i = 0; i < M; i++)
 	{
-		for (size_t j = 0; j < DATA.N; j++)
+		for (size_t j = 0; j < N; j++)
 		{
-			DATA.kx_mn(i, j) = DATA.kx_inc - DATA.m(i) * DATA.Tx;
-			DATA.ky_mn(i, j) = DATA.ky_inc - DATA.n(j) * DATA.Ty;
+			kx_mn(i, j) = kx_inc - m(i) * Tx;
+			ky_mn(i, j) = ky_inc - n(j) * Ty;
 		}
 	}
 
@@ -94,20 +106,254 @@ void RCWA::initiliaze()
 	//cout << endl;
 	//real(ky_mn).print();
 	//kx_mn.reshape(Nh, 1).print();
-	DATA.Kx = diagmat(DATA.kx_mn.reshape(DATA.Nh, 1));
-	  DATA.Ky = diagmat(DATA.ky_mn.reshape(DATA.Nh, 1));
+	cx_mat Kx = diagmat(kx_mn.reshape(Nh, 1));
+	cx_mat Ky = diagmat(ky_mn.reshape(Nh, 1));
 
 
 	//diagvec(Kx).print();
 
 	//cout << "\t初始化散射矩阵\n";
-	  I = cx_mat(DATA.Nh, DATA.Nh, fill::eye);
-	  II = cx_mat(2 * DATA.Nh, 2 * DATA.Nh, fill::eye);
-	  Z = cx_mat(DATA.Nh, DATA.Nh);
-	  ZZ = cx_mat(DATA.Nh * 2, DATA.Nh * 2);
+	cx_mat I(Nh, Nh, fill::eye);
+	cx_mat II(2 * Nh, 2 * Nh, fill::eye);
+	cx_mat Z(Nh, Nh);
+	cx_mat ZZ(Nh * 2, Nh * 2);
 
-	G.S11 = DATA.ZZ;
-	G.S12 = DATA.II;
-	G.S21 = DATA.II;
-	G.S22 = DATA.ZZ;
+	Smatrix G;
+
+	G.S11 = ZZ;
+	G.S12 = II;
+	G.S21 = II;
+	G.S22 = ZZ;
+
+	// -------------------------------------------------------GAP-------
+
+	cout << "计算GAP区\n";
+	cx_mat Kz = conj(sqrt(I - Kx * Kx - Ky * Ky));
+	cx_mat Q = MatrixConnect(Kx * Ky, I - Kx * Kx, Ky * Ky - I, -Kx * Ky);
+	cx_mat W0 = MatrixConnect(I, Z, Z, I);
+	cx_mat LAM = MatrixConnect(iI * Kz, Z, Z, iI * Kz);
+	cx_mat V0 = Q * inv(LAM);
+
+	//V0.diag().print();
+
+	//V0.print();
+	//---------------------------------------------------------反射---------
+	cout << "计算反射区\n";
+	//cx_double  ER_ref = ER_inc;
+	//cx_double  UR_ref = UR_inc;
+
+	cx_mat Kz_ref = -conj(sqrt(conj(UR_ref) * conj(ER_ref) * I - Kx * Kx - Ky * Ky));
+
+
+	cx_mat Qref = 1.0 / UR_ref * MatrixConnect(
+		Kx * Ky, UR_ref * ER_ref * I - Kx * Kx,
+		Ky * Ky - UR_ref * ER_ref * I, -Ky * Kx);
+	cx_mat Wref = MatrixConnect(I, Z, Z, I);
+	cx_mat LAMref = MatrixConnect(-1i * Kz_ref, Z, Z, -1i * Kz_ref);
+	cx_mat Vref = Qref * inv(LAMref);
+	//Vref.diag().print();
+
+	cx_mat Aref = inv(W0) * Wref + inv(V0) * Vref;
+	cx_mat Bref = inv(W0) * Wref - inv(V0) * Vref;
+
+	Smatrix SR;
+
+	SR.S11 = -inv(Aref) * Bref;
+	SR.S12 = 2.0 * inv(Aref);
+	SR.S21 = 0.5 * (Aref - Bref * inv(Aref) * Bref);
+	SR.S22 = Bref * inv(Aref);
+
+	G = SconnectRight(G, SR);
+
+	//G.S12.diag().print();
+
+	//---------------------------------------------------器件
+	cout << "计算器件区\n";
+
+	vec ZL = diff(z);
+	double di;
+	cx_mat ERi, URi(Nx, Ny, fill::ones);
+	cx_mat ERC, URC;
+
+	cx_mat Indexi, Wi, Vi, Ai, Bi, Xi, LAMi, Pi, Qi, Oi;
+	cx_vec LAMi2;
+	Smatrix D;
+	for (size_t Layer = 0; Layer < ZL.size();Layer++)
+	{
+		cout << "\t第" << Layer + 1 << "层: ";
+		t2 = clock();
+
+		di = ZL(Layer);
+		Indexi = conj(Index[Layer]);
+
+		ERi = pow(Indexi, 2.0);
+
+		ERC = Convulation_Matrix(ERi, m, n);
+		//ERC.print();
+		//ERC.col(0).print();
+		//URi.diag().print();
+
+		URC = Convulation_Matrix(URi, m, n);
+
+		Pi = MatrixConnect(
+			Kx * inv(ERC) * Ky, URC - Kx * inv(ERC) * Kx,
+			Ky * inv(ERC) * Ky - URC, -Ky * inv(ERC) * Kx);
+		Qi = MatrixConnect(
+			Kx * inv(URC) * Ky, ERC - Kx * inv(URC) * Kx,
+			Ky * inv(URC) * Ky - ERC, -Ky * inv(URC) * Kx);
+		Oi = Pi * Qi;
+
+		//[Wi, LAMi2] = eig(Oi);
+		eig_gen(LAMi2, Wi, Oi);
+		LAMi = diagmat(sqrt(LAMi2));
+
+		Vi = Qi * Wi * inv(LAMi);
+
+		Ai = inv(Wi) * W0 + inv(Vi) * V0;
+		Bi = inv(Wi) * W0 - inv(Vi) * V0;
+		Xi = expmat(-LAMi * k0 * di);
+		//real(Ai).print();
+
+
+		D.S11 = solve(Ai - Xi * Bi * inv(Ai) * Xi * Bi,
+			Xi * Bi * inv(Ai) * Xi * Ai - Bi);
+		D.S12 = solve(Ai - Xi * Bi * inv(Ai) * Xi * Bi, Xi)
+			* (Ai - Bi * inv(Ai) * Bi);
+		D.S21 = D.S12;
+		D.S22 = D.S11;
+		G = SconnectRight(G, D);
+
+		//G.S12.diag().print();
+
+
+		t3 = clock();
+		cout << "\t耗时: " << double(t3 - t2) / CLOCKS_PER_SEC << "s\n";
+	}
+
+	//G.S12.diag().print();
+
+	// --------------------------------计算透射区
+
+	cout << "计算透射区\n";
+	//cx_double ER_trn = 1;
+	//cx_double UR_trn = 1;
+	cx_mat Kz_trn = conj(sqrt(conj(UR_trn) * conj(ER_trn) * I - Kx * Kx - Ky * Ky));
+
+	cx_mat 	Qtrn = 1.0 / UR_trn * MatrixConnect(
+		Kx * Ky, UR_trn * ER_trn * I - Kx * Kx,
+		Ky * Ky - UR_trn * ER_trn * I, -Ky * Kx);
+	cx_mat Wtrn = MatrixConnect(I, Z, Z, I);
+	cx_mat LAMtrn = MatrixConnect(1i * Kz_trn, Z, Z, 1i * Kz_trn);
+	cx_mat Vtrn = Qtrn * inv(LAMtrn);
+
+	cx_mat Atrn = inv(W0) * Wtrn + inv(V0) * Vtrn;
+	cx_mat Btrn = inv(W0) * Wtrn - inv(V0) * Vtrn;
+
+	Smatrix ST;
+	ST.S11 = Btrn * inv(Atrn);
+	ST.S12 = 0.5 * (Atrn - Btrn * inv(Atrn) * Btrn);
+	ST.S21 = 2 * inv(Atrn);
+	ST.S22 = -inv(Atrn) * Btrn;
+
+	G = SconnectRight(G, ST);
+
+	//G.S12.diag().print();
+
+
+	//  -----------------------------------计算透射谱
+
+	vec s{ sin(phiArc) , -cos(phiArc) , 0 };
+	vec p{ cos(thetaArc) * cos(phiArc),
+			cos(thetaArc) * sin(phiArc),
+			-sin(thetaArc) };
+	mat SP = join_rows(s, p);
+	//SP.print();
+
+	double Rs, Ts, Rp, Tp;
+	for (size_t SP_index = 0; SP_index < 2; SP_index++)
+	{
+		vec Pol = SP.col(SP_index);
+
+		double px = Pol(0);
+		double py = Pol(1);
+		double pz = Pol(2);
+
+		vec del(Nh);
+		size_t pq = Nh / 2 + 1;
+		del(pq - 1) = 1;
+
+		vec StInc = join_cols(px * del, py * del);
+		cx_vec Cinc = inv(Wref) * StInc;
+		cx_vec Cref = G.S11 * Cinc;
+		cx_vec Ctrn = G.S21 * Cinc;
+
+		cx_vec rT = Wref * G.S11 * Cinc;
+		cx_vec tT = Wtrn * G.S21 * Cinc;
+
+		cx_vec rX = rT.rows(0, Nh - 1);
+		//rX.print();
+		cx_vec rY = rT.rows(Nh, rT.n_rows - 1);
+
+		cx_vec tX = tT.rows(0, Nh - 1);
+		cx_vec tY = tT.rows(Nh, tT.n_rows - 1);
+
+		////%% 纵向分量
+
+		cx_vec rZ = -inv(Kz_ref) * (Kx * rX + Ky * rY);
+		cx_vec tZ = -inv(Kz_trn) * (Kx * tX + Ky * tY);
+
+		////%% 计算衍射系数
+		vec r2 = real(rX % conj(rX) + rY % conj(rY) + rZ % conj(rZ));
+		vec t2 = real(tX % conj(tX) + tY % conj(tY) + tZ % conj(tZ));
+
+
+		vec  R = real(-Kz_ref / UR_ref) / real(kz_inc / UR_ref) * r2;
+		vec T = real(Kz_trn / UR_trn) / real(kz_inc / UR_inc) * t2;
+
+		if (SP_index == 0)
+		{
+			Rs = sum(R);
+			Ts = sum(T);
+		}
+
+		if (SP_index == 1)
+		{
+			Rp = sum(R);
+			Tp = sum(T);
+		}
+	}
+
+	t4 = clock();
+	cout << "\n时间消耗 : " << double(t4 - t1) / CLOCKS_PER_SEC << "s" << endl;
+	cout << "结果：" << endl;
+	cout << "Rp" << "+" << "Tp" << "=" << Rp << "+" << Tp << "=" << Rp + Tp << endl;
+	cout << "Rs" << "+" << "Ts" << "=" << Rs << "+" << Ts << "=" << Rs + Ts << endl;
+
+	this->Rs = Rs;
+	this->Rp = Rp;
+	this->Tp = Tp;
+	this->Ts = Ts;
+
 }
+
+double RCWA::getRs()
+{
+	return Rs;
+}
+
+double RCWA::getRp()
+{
+	return Rp;
+}
+
+double RCWA::getTs()
+{
+	return Ts;
+}
+
+double RCWA::getTp()
+{
+	return Tp;
+}
+
+ 

@@ -102,3 +102,10 @@ write('ku.txt',num2str(ku),"overwrite");
 
 kv = getnamed("RCWA" , "max number kv");
 write('kv.txt',num2str(kv),"overwrite");
+
+substrate = getresult("RCWA","substrate");
+n_upper =real( substrate.n_upper );
+n_lower =real( substrate.n_lower);
+
+write('n_upper.txt',num2str(n_upper),"overwrite");
+write('n_lower.txt',num2str(n_lower),"overwrite");
