@@ -56,6 +56,7 @@ int main()
 	//Ts.print();
 	//Tp.print();
 
+	system("mkdir output");
 	Rs.save("output/Rs.txt", arma::raw_ascii);
 	Rp.save("output/Rp.txt", arma::raw_ascii);
 	Ts.save("output/Ts.txt", arma::raw_ascii);
