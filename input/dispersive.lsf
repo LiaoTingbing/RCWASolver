@@ -7,7 +7,7 @@ theta =  33  ;
 phi = 60 ;
 wave = 0.4e-6 ;
 waveSpan =0.4e-6;
-fpoint =50;
+fpoint =1;
 ku = 2 ;
 kv = 2 ;
 cellsx = 64 ;
@@ -58,7 +58,7 @@ Z = getresult( 'RCWA' , 'z') ;
 
 #grating_orders = getresult('RCWA' ,'grating_orders') ;
 
-matlabsave( 'DATA' ) ;
+#matlabsave( 'DATA' ) ;
 
 
 x = getresult("RCWA",'x');
