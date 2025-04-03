@@ -131,7 +131,9 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="fftshiftMatlab.cpp" />
     <ClCompile Include="fftMatlab.cpp" />
+    <ClCompile Include="RcwaGapSolve.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RCWA.cpp" />
     <ClCompile Include="userFunc.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +142,7 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="fftshiftMatlab.h" />
     <ClInclude Include="fftMatlab.h" />
+    <ClInclude Include="RCWA.h" />
     <ClInclude Include="userFunc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,6 +7,7 @@
 int main()
 {
  
+
 	Device rcwa;
 	rcwa.RCWA();
 	//fft_();

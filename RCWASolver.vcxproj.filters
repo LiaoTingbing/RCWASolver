@@ -33,6 +33,12 @@
     <ClCompile Include="userFunc.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="RCWA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RcwaGapSolve.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fftMatlab.h">
@@ -51,6 +57,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="userFunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RCWA.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
