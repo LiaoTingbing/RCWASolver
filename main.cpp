@@ -56,12 +56,13 @@ int main()
 	//Ts.print();
 	//Tp.print();
 
-	system("mkdir output");
-	Rs.save("output/Rs.txt", arma::raw_ascii);
-	Rp.save("output/Rp.txt", arma::raw_ascii);
-	Ts.save("output/Ts.txt", arma::raw_ascii);
-	Tp.save("output/Tp.txt", arma::raw_ascii);
-	dataIn.lambda.save("output/lambda.txt", arma::raw_ascii);
+	system("mkdir Output");
+
+	Rs.save("Output/Rs.txt", arma::raw_ascii);
+	Rp.save("Output/Rp.txt", arma::raw_ascii);
+	Ts.save("Output/Ts.txt", arma::raw_ascii);
+	Tp.save("Output/Tp.txt", arma::raw_ascii);
+	dataIn.lambda.save("Output/lambda.txt", arma::raw_ascii);
 
 	return 0;
 }
@@ -69,7 +70,7 @@ int main()
 DataFile loadDATA()
 {
 	DataFile DATA;
-	string filepath = "input/";
+	string filepath = "Input/";
 	DATA.LayerPos.load(filepath + "LayerPos.txt");
 	DATA.ku.load(filepath + "ku.txt");
 	DATA.kv.load(filepath + "kv.txt");
