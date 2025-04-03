@@ -16,7 +16,7 @@ RCWA::RCWA(DataRCWA& In)
 
 	z = In.z;
 	ku = In.ku;
-	kv = In.kv;;
+	kv = In.kv;
 	lambda = In.lambda;
 	theta = In.theta;
 	phi = In.phi;
@@ -67,8 +67,8 @@ void RCWA::Run()
 	double kz_inc = k_inc(2);
 
 	cout << "\t 计算周期矢量";
-	cout << "\t Lx = " << to_string(Lx);
-	cout << "\t Ly = " << to_string(Ly);
+	cout << "\t Lx = " << to_string(Lx*1e6);
+	cout << "\t\t Ly = " << to_string(Ly*1e6);
 	cout << endl;
 
 	double Tx = 2.0 * pi / Lx / k0;
@@ -76,7 +76,7 @@ void RCWA::Run()
 
 	cout << "\t 计算谐波展开:";
 	cout << "\t ku=" << to_string(ku);
-	cout << "\t kv=" << to_string(kv);
+	cout << "\t\t kv=" << to_string(kv);
 	cout << endl;
 
 	vec m = linspace(-ku, ku, 2 * ku + 1);
@@ -343,6 +343,31 @@ double RCWA::getTs()
 double RCWA::getTp()
 {
 	return Tp;
+}
+
+void RCWA::set_lambda(double In)
+{
+	lambda = In;
+}
+
+void RCWA::set_theta(double In)
+{
+	theta = In;
+}
+
+void RCWA::set_phi(double In)
+{
+	phi = In;
+}
+
+void RCWA::set_n_lower(double In)
+{
+	n_lower = In;
+}
+
+void RCWA::set_n_upper(double In)
+{
+	n_upper = In;
 }
 
 

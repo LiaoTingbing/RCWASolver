@@ -140,7 +140,12 @@
     <ClInclude Include="RCWA.h" />
     <ClInclude Include="fftshiftMatlab.h" />
     <ClInclude Include="fftMatlab.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="userFunc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

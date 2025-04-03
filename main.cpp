@@ -4,14 +4,13 @@
 #include "RCWA.h"
 
 DataFile loadDATA();
-//void multiLambda();
 
 
 int main()
 {
 
-	//multiLambda();
 	DataFile dataIn = loadDATA();
+
 	DataRCWA rcwaIn;
 
 	rcwaIn.Index = dataIn.Index;
@@ -21,6 +20,7 @@ int main()
 	rcwaIn.z = dataIn.z.col(0);
 	rcwaIn.ku = round (dataIn.ku(0) );
 	rcwaIn.kv =round( dataIn.kv(0) );
+
 	rcwaIn.theta =  (dataIn.theta(0));
 	rcwaIn.phi =  (dataIn.phi(0));
 	rcwaIn.lambda=  (dataIn.lambda(0));
@@ -28,7 +28,18 @@ int main()
 	rcwaIn.n_lower =   (dataIn.n_lower(0));
  
 	RCWA rcwa(rcwaIn);
-	rcwa.Run();
+
+	vec Rs(dataIn.lambda.size());
+	for (size_t i = 0; i < dataIn.lambda.size(); i++)
+	{
+		rcwa.set_lambda(dataIn.lambda(i));
+		rcwa.set_n_lower(dataIn.n_lower(i));
+		rcwa.set_n_upper(dataIn.n_upper(i));
+		rcwa.Run();
+		Rs(i) = rcwa.getRs();
+	}
+ 
+	Rs.print();
 
 	return 0;
 }

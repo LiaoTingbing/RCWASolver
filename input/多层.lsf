@@ -5,11 +5,14 @@ clear ;
 
 theta =  45  ;
 phi = 45 ;
-wave = 1.55e-6 ; 
-ku = 5 ;
-kv = 1 ;
+wave = 0.8e-6 ; 
+waveSpan = 0.8e-6;
+fpoint =4;
+ku = 4 ;
+kv = 4 ;
 cellsx = 64 ; 
 cellsy = cellsx ; 
+setnamed("RCWA" , "frequency points",fpoint);
 
 
 
@@ -20,6 +23,7 @@ switchtolayout ;
 setnamed('RCWA' ,'angle theta' , theta) ; 
 setnamed('RCWA' ,'angle phi' , phi) ; 
 setnamed('RCWA' ,'wavelength center' , wave) ; 
+setnamed('RCWA' ,'wavelength span' , waveSpan) ; 
 setnamed('RCWA' ,'max number ku' , ku) ; 
 setnamed('RCWA' ,'max number kv' , kv) ; 
 setnamed('RCWA' ,'mesh cells x' , cellsx) ; 
@@ -49,7 +53,7 @@ Z = getresult( 'RCWA' , 'z') ;
 
 
 
-grating_orders = getresult('RCWA' ,'grating_orders') ; 
+#grating_orders = getresult('RCWA' ,'grating_orders') ; 
 
 matlabsave( 'DATA' ) ; 
 
