@@ -180,6 +180,7 @@ void RCWA::Run()
 		t2 = clock();
 		  
 		di = ZL(Layer);
+
 		Indexi = conj(Index[Layer]);
 
 		ERi = pow(Indexi, 2.0);
