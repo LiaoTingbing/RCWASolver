@@ -33,6 +33,10 @@ int main()
 	RCWA rcwa(rcwaIn);
 
 	vec Rs(dataIn.lambda.size());
+	vec Rp(dataIn.lambda.size());
+	vec Ts(dataIn.lambda.size());
+	vec Tp(dataIn.lambda.size());
+
 	for (size_t i = 0; i < dataIn.lambda.size(); i++)
 	{
 		rcwa.set_lambda(dataIn.lambda(i));
@@ -41,9 +45,22 @@ int main()
 		rcwa.set_Index(dataIn.IndexS[i]);
 		rcwa.Run();
 		Rs(i) = rcwa.getRs();
+		Rp(i) = rcwa.getRp();
+		Ts(i) = rcwa.getTs();
+		Tp(i) = rcwa.getTp();
+
 	}
 
-	Rs.print();
+	//Rs.print();
+	//Rp.print();
+	//Ts.print();
+	//Tp.print();
+
+	Rs.save("output/Rs.txt", arma::raw_ascii);
+	Rp.save("output/Rp.txt", arma::raw_ascii);
+	Ts.save("output/Ts.txt", arma::raw_ascii);
+	Tp.save("output/Tp.txt", arma::raw_ascii);
+	dataIn.lambda.save("output/lambda.txt", arma::raw_ascii);
 
 	return 0;
 }
