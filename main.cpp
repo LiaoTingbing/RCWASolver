@@ -61,6 +61,7 @@ int main()
 	Rs.save("Output/Rs.txt", arma::raw_ascii);
 	Rp.save("Output/Rp.txt", arma::raw_ascii);
 	Ts.save("Output/Ts.txt", arma::raw_ascii);
+
 	Tp.save("Output/Tp.txt", arma::raw_ascii);
 	dataIn.lambda.save("Output/lambda.txt", arma::raw_ascii);
 
