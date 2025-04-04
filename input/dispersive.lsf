@@ -64,7 +64,7 @@ plot(1:fpoint,Tp);holdon;
 #grating_orders = getresult('RCWA' ,'grating_orders') ;
 
 #matlabsave( 'DATA' ) ;
-
+RT = [Rs , Rp , Ts , Tp];
 
 x = getresult("RCWA",'x');
 write('x.txt',num2str(x),"overwrite");
