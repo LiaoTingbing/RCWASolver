@@ -65,7 +65,19 @@ vcpkg integrate install
 仿真案例采用如图的器件结构 ，
 ![](images/struct.png)
 
-RCWA的仿真模型为
+RCWA的仿真模型为,
 ![](images/simulation.png)
+
+仿真参数设置
+
+| 名称 | 值 |
+| --- | --- |
+| ku | 5 |
+| kv | 5 |
+| theta | 5 |
+| phi | 5 |
+| lambda | 5 |
+
+![](images/RT.png)
 
 ## 总结

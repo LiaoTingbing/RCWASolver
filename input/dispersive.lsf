@@ -3,11 +3,11 @@
 clc ;
 clear ;
 
-theta =  30  ;
-phi = 60 ;
+theta =  45  ;
+phi = 45 ;
 #wave = 0.4e-6 ;
 #waveSpan = 0;
-fpoint =256;
+fpoint =128;
 ku = 4 ;
 kv = 4 ;
 cellsx = 64 ;
