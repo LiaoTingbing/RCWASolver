@@ -11,7 +11,7 @@ RCWA 求解器的仿真时间通常比 FDTD 短得多，因此是分析这些类
 RCWA 方法是一种半解析技术，用于求解多层结构中的麦克斯韦方程组。在这种方法中，结构沿传播方向被分成一系列均匀的层。
 沿传播方向具有逐渐变化的横截面的结构可以用一系列均匀的层来近似。例如，在下面显示的几何结构中，梯形形状 近似为一系列六层 ：
 
-![](images/RCWA_discrete_layers.png)
+![](examples1/images/RCWA_discrete_layers.png)
 
  增加截面上的层数可以提高模拟的精度，但会增加模拟时间。
 
@@ -21,7 +21,7 @@ RCWA 方法是一种半解析技术，用于求解多层结构中的麦克斯韦
  计算 S 矩阵后，可以计算出传输和反射的入射功率分数、每个光栅阶数的功率以及结构内部的电场和磁场等结果。
 ## 建模
 
-![](images/RCWA_model.png)
+![](examples1/images/RCWA_model.png)
 
 Note: 平面波的传播轴为z轴，沿着z轴正向传播。
 
@@ -65,11 +65,11 @@ vcpkg integrate install
 
 仿真案例采用如图的器件结构 ，
 
-![](images/struct.png)
+![](examples1/images/struct.png)
 
 RCWA的仿真模型为,
 
-![](images/simulation.png)
+![](examples1/images/simulation.png)
 
 仿真参数设置
 
@@ -83,7 +83,7 @@ RCWA的仿真模型为,
 
 计算的结果如下图，其中R，T代表反射率和透射率，s,p分别表示平面波垂直极化和平行极化。
 实线的结果是Lumerical RCWA，虚线的结果是本项目的RCWA求解器的结果，表明代码的有效性。
-![](images/RT.png)
+![](examples1/images/RT.png)
 
 ## 总结
 
