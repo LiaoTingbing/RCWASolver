@@ -1,4 +1,6 @@
 ﻿#pragma once
+
+//#define ARMA_USE_FFTW3
 #include <armadillo>
 #include <cmath>
 #include <iostream>

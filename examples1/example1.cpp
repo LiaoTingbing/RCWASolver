@@ -39,7 +39,8 @@ int main()
 	vec Tp(dataIn.lambda.size());
 
 	//	多波长求解
-	for (size_t i = 0; i < dataIn.lambda.size(); i++)
+#pragma omp parallel for num_threads(4)
+	for (int i = 0; i < dataIn.lambda.size(); i++)
 	{
 		system("cls");
 		rcwa.set_lambda(dataIn.lambda(i));
