@@ -1,5 +1,5 @@
 ﻿
-#pragma once
+// #pragma once
 #include "../include/rcwa.h"
 
 RCWA::RCWA()
@@ -9,20 +9,20 @@ RCWA::RCWA()
 
 RCWA::RCWA(DataRCWA& In)
 {
-	Index = In.Index;
-	LayerPos = In.LayerPos;
-	x = In.x;
-	y = In.y;
+	Index_ = In.Index;
+	layer_pos_ = In.LayerPos;
+	x_pos_ = In.x;
+	y_pos_ = In.y;
 
-	z = In.z;
-	ku = In.ku;
-	kv = In.kv;
-	lambda = In.lambda;
-	theta = In.theta;
-	phi = In.phi;
+	z_pos_ = In.z;
+	ku_ = In.ku;
+	kv_ = In.kv;
+	lambda_ = In.lambda;
+	theta_ = In.theta;
+	phi_angle_ = In.phi;
 
-	n_lower = In.n_lower;
-	n_upper = In.n_upper;;
+	n_lower_value = In.n_lower;
+	n_upper_value = In.n_upper;;
 }
 
 RCWA::~RCWA()
@@ -36,30 +36,30 @@ void RCWA::Run()
 	clock_t t1, t2, t3, t4;
 	t1 = clock();
 
-	size_t Nx = x.size();
-	size_t Ny = y.size();
-	size_t Ncx = x.size() - 1;
-	size_t Ncy = y.size() - 1;
+	size_t Nx = x_pos_.size();
+	size_t Ny = y_pos_.size();
+	size_t Ncx = x_pos_.size() - 1;
+	size_t Ncy = y_pos_.size() - 1;
 	size_t Nc = Ncx * Ncy;
 
-	double Lx = x(Nx - 1) - x(0);
-	double Ly = y(Ny - 1) - y(0);
-	double thetaArc = theta * pi / 180.0;
-	double phiArc = phi * pi / 180.0;
+	double Lx = x_pos_(Nx - 1) - x_pos_(0);
+	double Ly = y_pos_(Ny - 1) - y_pos_(0);
+	double thetaArc = theta_ * pi / 180.0;
+	double phiArc = phi_angle_ * pi / 180.0;
 	vec incident_direction = {
 		sin(thetaArc) * cos(phiArc),
 		sin(thetaArc) * sin(phiArc),
 		cos(thetaArc)
 	};
-	double k0 = 2 * pi / lambda;
+	double k0 = 2 * pi / lambda_;
 
 	cout << "\t 计算入射波矢:";
-	cout << "\t lambda=" << to_string(lambda * 1e6);
-	cout << "\t theta=" << to_string(theta);
-	cout << "\t phi=" << to_string(phi);
+	cout << "\t lambda=" << to_string(lambda_ * 1e6);
+	cout << "\t theta=" << to_string(theta_);
+	cout << "\t phi=" << to_string(phi_angle_);
 	cout << endl;
 
-	double ER_inc = n_lower * n_lower;
+	double ER_inc = n_lower_value * n_lower_value;
 	double UR_inc = 1;
 	vec k_inc = sqrt(ER_inc) * incident_direction;
 	double kx_inc = k_inc(0);
@@ -75,12 +75,12 @@ void RCWA::Run()
 	double Ty = 2.0 * pi / Ly / k0;
 
 	cout << "\t 计算谐波展开:";
-	cout << "\t ku=" << to_string(ku);
-	cout << "\t\t kv=" << to_string(kv);
+	cout << "\t ku=" << to_string(ku_);
+	cout << "\t\t kv=" << to_string(kv_);
 	cout << endl;
 
-	vec m = linspace(-ku, ku, 2 * ku + 1);
-	vec n = linspace(-kv, kv, 2 * kv + 1);
+	vec m = linspace(-ku_, ku_, 2 * ku_ + 1);
+	vec n = linspace(-kv_, kv_, 2 * kv_ + 1);
 
 	const size_t M = m.size();
 	const size_t N = n.size();
@@ -149,8 +149,11 @@ void RCWA::Run()
 	cx_mat Vref = Qref * inv(LAMref);
 	//Vref.diag().print();
 
-	cx_mat Aref = inv(W0) * Wref + inv(V0) * Vref;
-	cx_mat Bref = inv(W0) * Wref - inv(V0) * Vref;
+	/*cx_mat Aref = inv(W0) * Wref + inv(V0) * Vref;
+	cx_mat Bref = inv(W0) * Wref - inv(V0) * Vref;*/
+
+	cx_mat Aref = solve(W0,Wref) + solve(V0,Vref);
+	cx_mat Bref = solve(W0, Wref) - solve(V0, Vref);
 
 	Smatrix SR;
 
@@ -166,7 +169,7 @@ void RCWA::Run()
 	//---------------------------------------------------器件
 	cout << " 计算器件区\n";
 
-	vec ZL = diff(z);
+	vec ZL = diff(z_pos_);
 	double di;
 	cx_mat ERi, URi(Nx, Ny, fill::ones);
 	cx_mat ERC, URC;
@@ -181,7 +184,7 @@ void RCWA::Run()
 		  
 		di = ZL(Layer);
 
-		Indexi = conj(Index[Layer]);
+		Indexi = conj(Index_[Layer]);
 
 		ERi = pow(Indexi, 2.0);
 
@@ -231,7 +234,7 @@ void RCWA::Run()
 	// --------------------------------计算透射区
 
 	cout << " 计算透射区\n";
-	double ER_trn = n_upper * n_upper;
+	double ER_trn = n_upper_value * n_upper_value;
 	double UR_trn = 1;
 	cx_mat Kz_trn = conj(sqrt(conj(UR_trn) * conj(ER_trn) * I - Kx * Kx - Ky * Ky));
 
@@ -348,32 +351,32 @@ double RCWA::getTp()
 
 void RCWA::set_lambda(double In)
 {
-	lambda = In;
+	lambda_ = In;
 }
 
 void RCWA::set_theta(double In)
 {
-	theta = In;
+	theta_ = In;
 }
 
 void RCWA::set_phi(double In)
 {
-	phi = In;
+	phi_angle_ = In;
 }
 
 void RCWA::set_n_lower(double In)
 {
-	n_lower = In;
+	n_lower_value = In;
 }
 
 void RCWA::set_n_upper(double In)
 {
-	n_upper = In;
+	n_upper_value = In;
 }
 
 void RCWA::set_Index(vector<cx_mat> In)
 {
-	Index = In;
+	Index_ = In;
 }
 
 

@@ -2,13 +2,17 @@
 //
 
 #include "../include/rcwa.h"
-#define cout if (false) std::cout
+//#define cout if (false) std::cout
 
 DataFile loadDATA();
+// 重定向到空缓冲区
 
 
 int main()
 {
+	std::cout.rdbuf(nullptr);
+	std::cerr.rdbuf(nullptr);
+	std::clog.rdbuf(nullptr);
 
 	DataFile dataIn = loadDATA();
 
@@ -39,7 +43,7 @@ int main()
 	vec Tp(dataIn.lambda.size());
 
 	//	多波长求解
-#pragma omp parallel for num_threads(4)
+// #pragma omp parallel for num_threads(4)
 	for (int i = 0; i < dataIn.lambda.size(); i++)
 	{
 		system("cls");

@@ -5,10 +5,10 @@
 
 class RCWA
 {
-	vector<cx_mat> Index;
-	vec LayerPos, x, y, z;
-	int ku, kv;
-	double  lambda, theta, phi, n_lower, n_upper;
+	vector<cx_mat> Index_;
+	vec layer_pos_, x_pos_, y_pos_, z_pos_;
+	int ku_, kv_;
+	double  lambda_, theta_, phi_angle_, n_lower_value, n_upper_value;
 
 	double Rs, Rp, Ts, Tp;
 
@@ -22,11 +22,13 @@ public:
  
 	void Run();
 
+	//	计算结果
 	double getRs();
 	double getRp();
 	double getTs();
 	double getTp();
  
+	//	
 	void set_lambda(double In) ;
 	void set_theta(double In);
 	void set_phi(double In);
